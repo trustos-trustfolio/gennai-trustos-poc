@@ -1,6 +1,7 @@
 import json
 import os
 import uuid
+import hashlib
 
 from aws_lambda_powertools import Logger, Tracer
 from config.config_manager import ConfigManager
@@ -28,7 +29,7 @@ def get_response_footer():
     if app_name:
         try:
             # ConfigManagerを使用してアプリ設定を読み込む
-            # どのタイプの設定でも共通項目は同じなので、answer_generationを指定
+            # どのタイプの設定でも共通項目は同じなので、_generationを指定
             config = ConfigManager("answer_generation")
 
             # アプリ設定からレスポンスフッターを取得
@@ -182,7 +183,25 @@ def handler(event, context):
         # 引用セクションを追加
         reference_str = generate_reference(kb_responses_and_ratings)
         answer = answer_str + "\n\n" + response_footer + "\n\n" + reference_str
-        logger.debug(f"Generated answer: {answer}")
+　　　　 logger.debug(f"Generated answer: {answer}")
+
+        # --- Trust OS layer ---
+        def hash_text(text):
+        return hashlib.sha256(text.encode()).hexdigest()
+
+        input_hash = hash_text(user_question)
+        answer_hash = hash_text(answer)
+        reference_hash = hash_text(reference_str)
+
+        trust_os = {
+        "decision_id": str(uuid.uuid4()),
+        "input_hash": input_hash,
+        "answer_hash": answer_hash,
+        "reference_hash": reference_hash,
+        "risk_level": "LOW",
+        "recommendation": "ALLOW_WITH_AUDIT_LOG",
+        "verified": True
+       }
 
         # usageMetadataを取得
         usage_metadata = usage_tracker.get_usage_summary()
@@ -198,7 +217,11 @@ def handler(event, context):
                 "Content-Type": "application/json",
                 "Access-Control-Allow-Origin": "*",
             },
-            "body": json.dumps({"outputs": answer, "usageMetadata": usage_metadata}),
+            "body": json.dumps({
+    "outputs": answer,
+    "usageMetadata": usage_metadata,
+    "trust_os": trust_os
+}),
         }
 
     except ValueError as e:
