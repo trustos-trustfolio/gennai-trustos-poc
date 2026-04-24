@@ -1,5 +1,7 @@
 # Trust OS for GovAI (Gennai PoC)
 
+This adds a verification layer to GovAI (Gennai-compatible AI)
+
 Trust OS adds a verification layer to government AI systems.
 
 This repository demonstrates how to integrate Trust OS with Gennai-compatible AI applications.
@@ -21,13 +23,21 @@ Instead of only returning an answer, the system:
 
 ## Architecture
 
-User Input
-↓
-GovAI (RAG / LLM)
-↓
-Trust OS Layer
-↓
-Verifiable JSON Output
+User Input  
+↓  
+GovAI (RAG / LLM)  
+↓  
+Trust OS Layer  
+↓  
+Verifiable JSON Output  
+
+---
+
+## Run Example
+
+curl -X POST https://YOUR_API_ENDPOINT/invoke \
+  -H "Content-Type: application/json" \
+  -d @example/curl.json
 
 ---
 
@@ -46,43 +56,3 @@ Verifiable JSON Output
     "verified": true
   }
 }
-```
-
----
-
-## Why this matters
-
-Most AI systems generate answers but cannot prove how they were produced.
-
-Trust OS enables:
-
-* Verifiable AI decisions
-* Audit-ready outputs
-* Explainability for government use
-* Integrity layer for public systems
-
----
-
-## Positioning
-
-Gennai provides the AI execution layer.
-Trust OS provides the verification layer.
-
-Together, they enable:
-
-"Trustworthy Government AI"
-
----
-
-## Use Cases
-
-* Administrative decision support
-* Legal / regulatory AI
-* Public service automation
-* Audit-compliant AI workflows
-
----
-
-## Status
-
-PoC (Proof of Concept)
