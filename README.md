@@ -43,7 +43,6 @@ curl -X POST https://YOUR_API_ENDPOINT/invoke \
 
 ## Example Response
 
-```json
 {
   "outputs": "フレックスタイム制は...",
   "trust_os": {
@@ -56,3 +55,48 @@ curl -X POST https://YOUR_API_ENDPOINT/invoke \
     "verified": true
   }
 }
+
+---
+
+## Why this matters
+
+Most AI systems generate answers but cannot prove how they were produced.
+
+Trust OS enables:
+
+- Verifiable AI decisions
+- Audit-ready outputs
+- Explainability for government use
+- Integrity layer for public systems
+
+---
+
+## Positioning
+
+Gennai provides the AI execution layer.  
+Trust OS provides the verification layer.  
+
+Together, they enable:
+
+"Trustworthy Government AI"
+
+---
+
+## Use Cases
+
+- Administrative decision support
+- Legal / regulatory AI
+- Public service automation
+- Audit-compliant AI workflows
+
+---
+
+## Local Test (Optional)
+
+python lambda/app.py
+
+---
+
+## Status
+
+PoC (Proof of Concept)
