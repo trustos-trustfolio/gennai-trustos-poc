@@ -28,6 +28,7 @@ Trust OS Layer
 ↓  
 Verifiable JSON Output  
 
+![Architecture](architecture.png)
 ---
 
 ## Run Example
