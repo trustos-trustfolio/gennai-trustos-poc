@@ -1,8 +1,8 @@
 # Trust OS for GovAI (Gennai PoC)
 
-This adds a verification layer to GovAI (Gennai-compatible AI), making AI decisions auditable.
-
+This adds a verification layer to GovAI (Gennai-compatible AI), enabling auditable AI decisions for government use.
 Trust OS adds a verification layer to government AI systems.
+
 ---
 
 ## What this does
