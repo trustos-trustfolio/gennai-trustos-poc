@@ -98,3 +98,13 @@ python lambda/app.py
 ## Status
 
 PoC (Proof of Concept)
+
+---
+
+## Related Projects
+
+- Gennai (Digital Agency OSS)
+  https://github.com/digital-go-jp/genai-ai-api
+
+- Trust OS Extension (this repo)
+  https://github.com/trustos-trustfolio/gennai-trustos-poc
