@@ -26,6 +26,8 @@ Instead of only returning an AI answer, the system:
 
 ## Architecture
 
+architecture.png
+
 ```txt
 User Input
   ↓
