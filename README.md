@@ -1,46 +1,61 @@
-# Trust OS for GovAI (Gennai PoC)
+# Trust OS for GovAI / Gennai PoC
 
-This adds a verification layer to GovAI (Gennai-compatible AI), enabling auditable AI decisions for government use.
-Trust OS adds a verification layer to government AI systems.
+Experimental implementation of Trust OS verification on top of GovAI outputs.
+
+This repository demonstrates how Trust OS can add a lightweight verification layer to government AI workflows, including Gennai-compatible RAG / LLM outputs.
+
+Trust OS is not the AI execution layer.
+
+Trust OS is the verification layer.
 
 ---
 
 ## What this does
 
-This PoC adds a verification layer after AI decision generation.
+This PoC adds a verification record after AI response generation.
 
-Instead of only returning an answer, the system:
+Instead of only returning an AI answer, the system:
 
-1. Generates AI response (RAG / LLM)
-2. Hashes input, output, and references
-3. Attaches a verifiable Trust OS record
-4. Returns a structured JSON response
+1. Receives a user question
+2. Generates an AI response using GovAI / RAG / LLM
+3. Hashes the input, output, and references
+4. Attaches a Trust OS verification record
+5. Returns a structured JSON response
 
 ---
 
 ## Architecture
 
-User Input  
-↓  
-GovAI (RAG / LLM)  
-↓  
-Trust OS Layer  
-↓  
-Verifiable JSON Output  
+```txt
+User Input
+  ↓
+GovAI / Gennai-compatible RAG / LLM
+  ↓
+Trust OS Verification Layer
+  ↓
+Verifiable JSON Output
+```
 
-![Architecture](architecture.png)
 ---
 
-## Run Example
+## Example Request
 
-curl -X POST https://YOUR_API_ENDPOINT/invoke \
-  -H "Content-Type: application/json" \
-  -d @example/curl.json
+```json
+{
+  "inputs": {
+    "question": "フレックスタイム制について教えてください",
+    "n_queries": 3,
+    "output_in_detail": false,
+    "tags": "労務"
+  }
+}
+```
 
 ---
 
 ## Example Response
 
+```json
 {
   "outputs": "フレックスタイム制は...",
   "trust_os": {
@@ -53,6 +68,7 @@ curl -X POST https://YOUR_API_ENDPOINT/invoke \
     "verified": true
   }
 }
+```
 
 ---
 
@@ -60,11 +76,11 @@ curl -X POST https://YOUR_API_ENDPOINT/invoke \
 
 Trust OS is not designed to verify every AI output.
 
-Verifying every decision can create unnecessary noise, storage cost, and operational complexity.
+Verifying every response can create unnecessary audit noise, storage cost, and operational complexity.
 
 Instead, Trust OS is designed as a selective verification layer.
 
-The goal is to verify decisions that are high-risk, policy-relevant, or audit-sensitive.
+The goal is to verify outputs that are high-risk, policy-relevant, human-impacting, or audit-sensitive.
 
 ---
 
@@ -80,8 +96,7 @@ Example trigger conditions:
 - Public service eligibility
 - Human-impacting recommendation
 - Policy-sensitive workflow
-
-This avoids creating unnecessary logs for low-risk AI outputs.
+- Audit-sensitive administrative process
 
 ---
 
@@ -105,25 +120,6 @@ This keeps the record lightweight, structured, and audit-ready.
 
 ---
 
-## Example Trust OS Record
-
-{
-  "decision_id": "tos_govai_001",
-  "input_hash": "sha256...",
-  "output_hash": "sha256...",
-  "reference_hash": "sha256...",
-  "risk_level": "HIGH",
-  "recommendation": "REVIEW_REQUIRED",
-  "reason_codes": [
-    "POLICY_RELEVANT",
-    "PUBLIC_IMPACT",
-    "AUDIT_REQUIRED"
-  ],
-  "verification_status": "VERIFIED"
-}
-
----
-
 ## Where Trust OS Should Be Applied
 
 Trust OS is most useful when AI outputs affect important decisions.
@@ -138,8 +134,6 @@ Recommended use cases:
 - Procurement evaluation support
 - Public service decision support
 - High-impact citizen-facing workflows
-
-These areas require explainability, auditability, and accountability.
 
 ---
 
@@ -168,6 +162,8 @@ But critical decisions must be verifiable.
 
 Trust OS focuses on high-impact decisions where accountability matters.
 
+---
+
 ## Why this matters
 
 Most AI systems generate answers but cannot prove how they were produced.
@@ -177,46 +173,42 @@ Trust OS enables:
 - Verifiable AI decisions
 - Audit-ready outputs
 - Explainability for government use
-- Integrity layer for public systems
+- Integrity records for public systems
+- Decision traceability before execution
 
 ---
 
 ## Positioning
 
-Gennai provides the AI execution layer.  
-Trust OS provides the verification layer.  
+Gennai provides the AI execution layer.
 
-Together, they enable:
+Trust OS provides the verification layer.
 
-"Trustworthy Government AI"
-
----
-
-## Use Cases
-
-- Administrative decision support
-- Legal / regulatory AI
-- Public service automation
-- Audit-compliant AI workflows
-
----
-
-## Local Test (Optional)
-
-python lambda/app.py
+Together, they demonstrate a path toward trustworthy government AI.
 
 ---
 
 ## Status
 
-PoC (Proof of Concept)
+PoC / Experimental Extension
+
+This repository is not the main Trust OS API.
+
+The main Trust OS production API is available through:
+
+```txt
+https://trustos-core-gateway-v2-7jm9owrs.an.gateway.dev
+```
 
 ---
 
 ## Related Projects
 
-- Gennai (Digital Agency OSS)
+- Gennai / Digital Agency OSS  
   https://github.com/digital-go-jp/genai-ai-api
 
-- Trust OS Extension (this repo)
-  https://github.com/trustos-trustfolio/gennai-trustos-poc
+- Trust OS SDK  
+  https://www.npmjs.com/package/trust-os-sdk
+
+- Trust OS API  
+  https://github.com/trustos-trustfolio/trustos-api-clean
