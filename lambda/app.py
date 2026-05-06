@@ -183,25 +183,25 @@ def handler(event, context):
         # 引用セクションを追加
         reference_str = generate_reference(kb_responses_and_ratings)
         answer = answer_str + "\n\n" + response_footer + "\n\n" + reference_str
-　　　　 logger.debug(f"Generated answer: {answer}")
+        logger.debug(f"Generated answer: {answer}")
 
         # --- Trust OS layer ---
         def hash_text(text):
-        return hashlib.sha256(text.encode()).hexdigest()
+            return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
         input_hash = hash_text(user_question)
         answer_hash = hash_text(answer)
         reference_hash = hash_text(reference_str)
 
         trust_os = {
-        "decision_id": str(uuid.uuid4()),
-        "input_hash": input_hash,
-        "answer_hash": answer_hash,
-        "reference_hash": reference_hash,
-        "risk_level": "LOW",
-        "recommendation": "ALLOW_WITH_AUDIT_LOG",
-        "verified": True
-       }
+            "decision_id": str(uuid.uuid4()),
+            "input_hash": input_hash,
+            "answer_hash": answer_hash,
+            "reference_hash": reference_hash,
+            "risk_level": "LOW",
+            "recommendation": "ALLOW_WITH_AUDIT_LOG",
+            "verified": True
+        }
 
         # usageMetadataを取得
         usage_metadata = usage_tracker.get_usage_summary()
